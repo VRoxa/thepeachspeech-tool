@@ -1,0 +1,24 @@
+{
+  "name": "thepeachspeech-tool",
+  "version": "1.0.0",
+  "description": "Utility tool that allows to publish articles to The Peach Speech web-blog.",
+  "main": "bin/index.js",
+  "private": true,
+  "scripts": {
+    "start": "npx ts-node src/index.tsx",
+    "build": "tsc && chmod +x ./bin/index.js",
+    "prepack": "npm run build"
+  },
+  "author": "VRoxa (Víctor de la Rocha)",
+  "license": "MIT",
+  "dependencies": {
+    "ink": "^3.2.0",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.12",
+    "@types/react": "^17.0.37",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  }
+}
