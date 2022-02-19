@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Box, Text, render } from 'ink';
+import { setup } from './modules/setup';
 
 const App = () => {
   return (
@@ -9,11 +10,12 @@ const App = () => {
   );
 }
 
-try {
-
+const main = async () => {
+  await setup();
   render(<App />);
+}
 
-} catch (err) {
+main().catch(err => {
   console.error(err);
   process.exit(1);
-}
+});
