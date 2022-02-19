@@ -4,6 +4,10 @@ import rimraf from 'rimraf';
 export const bareRepositoryPath = './thepeachspeech';
 export const repositoryUrl = 'https://github.com/VRoxa/thepeachspeech';
 
+// TODO - Display console log events with styles (using chalk.js)
+// NICE TO HAVE - Render console log events as React component
+// pushing messages to a message stream (using rx.js?).
+
 const cleanUpEnvironment = (): Promise<void> => {
   return new Promise(resolve => {
     console.log('Cleaning up the environment repository at', bareRepositoryPath);

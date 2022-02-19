@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react';
 import { Box, Text, render } from 'ink';
 import { setup } from './modules/setup';
+import { FileAccess } from './modules/file-access';
 
 const App = () => {
   return (
@@ -11,7 +12,14 @@ const App = () => {
 }
 
 const main = async () => {
-  await setup();
+  const repository = await setup();
+  const fileAccess = new FileAccess(repository);
+
+  const articles = await fileAccess.getContent('src/assets/articles.json')
+    .then(JSON.parse);
+  
+  console.log(articles);
+
   render(<App />);
 }
 
