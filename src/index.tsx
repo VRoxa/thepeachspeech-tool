@@ -4,20 +4,33 @@ import { setup } from './modules/setup';
 import { FileAccess } from './modules/git/file-access';
 import { NewArticleInput } from './components/NewArticleInput';
 import { ArticleDto } from './models/article.model';
+import { ArticlesService } from './modules/articles/articles-service';
+import path from 'path';
+import { createCommit } from './modules/git/create-commit';
 
 const main = async () => {
   try {
     
     const manager = await setup();
     const fileAccess = new FileAccess();
+    const service = new ArticlesService(fileAccess);
 
-    // await createArticle(fileAccess, {
-    //   title: 'Test article 2',
-    //   oneliner: 'Integration tool testing article',
-    //   url: 'article-2',
-    //   tags: ['test', 'integration'],
-    //   filePath: path.join(__dirname, '..', 'mock', 'article.md')
-    // });
+    const article: ArticleDto = {
+      title: 'Test article 3',
+      oneliner: 'Integration tool testing article',
+      url: 'article-3',
+      tags: ['test', 'integration'],
+      filePath: path.join(__dirname, '..', 'mock', 'article.md')
+    }
+    
+    const articles = await service.getArticles();
+    console.log(articles);
+
+    const created = await service.addArticle(article);
+    if (created) {
+      console.log(`Article ${article.title} created`);
+      await createCommit(`Upload article ${article.url}`);
+    }
   } catch (error) {
     console.error(error);
   }

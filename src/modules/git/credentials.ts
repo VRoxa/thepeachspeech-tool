@@ -1,9 +1,9 @@
 import { Cred, RemoteCallbacks } from 'nodegit';
-import path from 'path';
+import environment from '../../environment/environment';
+import { join } from 'path';
 
-const getPath = path.join.bind(path, __dirname);
-const sshPublicKeyPath = getPath('../../keys/id_rsa.pub');
-const sshPrivateKeyPath = getPath('../../keys/id_rsa');
+const sshPublicKeyPath = join(environment.keysPath, 'id_rsa.pub');
+const sshPrivateKeyPath = join(environment.keysPath, 'id_rsa');
 
 const getCredentials = (): Cred => {
   return Cred.sshKeyNew(

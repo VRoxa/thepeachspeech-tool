@@ -6,7 +6,7 @@ export class RepositoryManager {
   private repository!: Repository;
 
   clone = async (repositoryUrl: string, cloningPath: string) => {
-    this.repository = await Clone.clone(cloningPath, repositoryUrl, { 
+    this.repository = await Clone.clone(repositoryUrl, cloningPath, { 
       bare: 0,
       fetchOpts: {
         callbacks: getCredentialsCallbacks()

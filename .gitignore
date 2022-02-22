@@ -104,6 +104,7 @@ dist
 .tern-port
 
 thepeachspeech
+repository
 
 keys/*
 !keys/.gitkeep

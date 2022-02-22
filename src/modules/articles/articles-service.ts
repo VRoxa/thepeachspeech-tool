@@ -35,7 +35,7 @@ export class ArticlesService {
     }));
   }
 
-  createArticle = async (articleDto: ArticleDto): Promise<boolean> => {
+  addArticle = async (articleDto: ArticleDto): Promise<boolean> => {
     // Validate article DTO
     const [valid, error] = this.validator.validate(articleDto);
     if (!valid) {
