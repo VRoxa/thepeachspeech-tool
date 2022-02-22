@@ -57,7 +57,7 @@ export class ArticlesService {
 
     // Update articles.json file
     articles = [...articles, articleDto as Required<Article>];
-    await this.fileAccess.addOrUpdateFile(articlesJsonFilePath, JSON.stringify(articles));
+    await this.fileAccess.addOrUpdateFile(articlesJsonFilePath, JSON.stringify(articles, null, 2));
     
     // Upload article markdown file
     const articleFilePath = `${articlesFolderPath}/${articleDto.url}.md`;

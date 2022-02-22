@@ -7,74 +7,73 @@ import { ArticleDto } from './models/article.model';
 import { ArticlesService } from './modules/articles/articles-service';
 import path from 'path';
 import { createCommit } from './modules/git/create-commit';
+import { MainMenu } from './components/MainMenu';
 
 const main = async () => {
   try {
     
-    const manager = await setup();
-    const fileAccess = new FileAccess();
-    const service = new ArticlesService(fileAccess);
+    // const manager = await setup();
+    // const fileAccess = new FileAccess();
+    // const service = new ArticlesService(fileAccess);
 
-    const article: ArticleDto = {
-      title: 'Test article 3',
-      oneliner: 'Integration tool testing article',
-      url: 'article-3',
-      tags: ['test', 'integration'],
-      filePath: path.join(__dirname, '..', 'mock', 'article.md')
-    }
+    // const article: ArticleDto = {
+    //   title: 'Test article 3',
+    //   oneliner: 'Integration tool testing article',
+    //   url: 'article-3',
+    //   tags: ['test', 'integration'],
+    //   filePath: path.join(__dirname, '..', 'mock', 'article.md')
+    // }
     
-    const articles = await service.getArticles();
-    console.log(articles);
+    // const articles = await service.getArticles();
+    // console.log(articles);
 
-    const created = await service.addArticle(article);
-    if (created) {
-      console.log(`Article ${article.title} created`);
-      await createCommit(`Upload article ${article.url}`);
-    }
+    // const created = await service.addArticle(article);
+    // if (created) {
+    //   console.log(`Article ${article.title} created`);
+    //   await createCommit(`Upload article ${article.url}`);
+    // }
+
+    // await manager.push();
   } catch (error) {
     console.error(error);
   }
 
   const App = () => {
-    const [articleCreated, setArticleCreated] = useState<boolean>(false);
-  
-    const onArticleCreated = async (article: ArticleDto) => {
-      setArticleCreated(true);
+    // TODO - Validate article
+    //  - Article URL is not duplicated
+    //  - Article file path exists and it's an actual MD file
+    
+    // TODO - Add article object to assets/articles.json in repository
+    // TODO - Copy article markdown file to assets/articles in repository
+    // (Use article.url as file name)
 
-      // TODO - Validate article
-      //  - Article URL is not duplicated
-      //  - Article file path exists and it's an actual MD file
-      
-      // TODO - Add article object to assets/articles.json in repository
-      // TODO - Copy article markdown file to assets/articles in repository
-      // (Use article.url as file name)
+    // TODO - Commit changes
+    // TODO - Push changes to remote repository 'master' branch
 
-      // TODO - Commit changes
-      // TODO - Push changes to remote repository 'master' branch
+    // await createArticle(fileAccess, article);
 
-      // await createArticle(fileAccess, article);
+    // const articls = await fileAccess.getContent('src/assets/articles.json')
+    //   .then(content => JSON.parse(content));
 
-      // const articls = await fileAccess.getContent('src/assets/articles.json')
-      //   .then(content => JSON.parse(content));
+    // console.log('updated articles', articls);
 
-      // console.log('updated articles', articls);
+    // const content = await fileAccess.getContent('src/assets/articles/' + article.url + '.md');
 
-      // const content = await fileAccess.getContent('src/assets/articles/' + article.url + '.md');
-
-      // console.log('article content', content);
-    }
+    // console.log('article content', content);
+    // }
   
     return (
-      <Box flexDirection="column">
-        <NewArticleInput onComplete={onArticleCreated}></NewArticleInput>
-        {articleCreated &&
-          <Text color="green">Article created.</Text>
-        }
-      </Box>
+      // <Box flexDirection="column">
+      //   <NewArticleInput onComplete={onArticleCreated}></NewArticleInput>
+      //   {articleCreated &&
+      //     <Text color="green">Article created.</Text>
+      //   }
+      // </Box>
+      <MainMenu />
     );
   }
 
-  // render(<App />);
+  render(<App />);
 }
 
 main().catch(err => {
