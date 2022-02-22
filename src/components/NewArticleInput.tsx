@@ -63,7 +63,7 @@ export const NewArticleInput = ({ onComplete }: NewArticleInputProps) => {
     <>
       <Box flexDirection="column">
         {previousValues.map((message, index) => 
-          <Text color="green" key={index}>{message}</Text>
+          <Text color="blue" key={index}>{message}</Text>
         )}
       </Box>
     
