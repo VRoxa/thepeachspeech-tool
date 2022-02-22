@@ -1,26 +1,18 @@
+import environment from '../../environment/environment';
 import { join } from 'path';
 import fs from 'fs';
-import environment from '../../environment/environment';
 
 export class FileAccess {
 
-  constructor() { }
-  
   getContent = async (path: string): Promise<string> => {
-    return null;
+    const fullPath = this.getPath(path);
+    const content: string = await fs.promises.readFile(fullPath, { encoding: 'utf8' });
+    return content;
   }
   
-  addOrUpdateFile = async (fullPath: string, content: string): Promise<void> => {
-    // const [folderPath, fileName] = splitFullPath(fullPath);
-
-    // Create a file at the given fullPath with the content.
-    // If the file exists, it will be overwritten.
-    const filePath = this.getPath(fullPath);
-    await new Promise<void>((resolve, reject) => {
-      fs.writeFile(filePath, content, (err) => {
-        !!err ? reject(err) : resolve();
-      });
-    });
+  addOrUpdateFile = async (path: string, content: string): Promise<void> => {
+    const fullPath = this.getPath(path);
+    await fs.promises.writeFile(fullPath, content, { encoding: 'utf8' });
   }
 
   private getPath = (fullPath: string): string => {

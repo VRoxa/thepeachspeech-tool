@@ -27,8 +27,12 @@ export class ArticlesService {
   }
 
   getArticles = async (): Promise<Article[]> => {
-    // TODO - Read articles.json file and return the articles
-    return null;
+    const articlesJson = await this.fileAccess.getContent(articlesJsonFilePath);
+    const articles: RawArticle[] = JSON.parse(articlesJson);
+    return articles.map(article => ({
+      ...article,
+      date: new Date(article.date)
+    }));
   }
 
   createArticle = async (articleDto: ArticleDto): Promise<boolean> => {
