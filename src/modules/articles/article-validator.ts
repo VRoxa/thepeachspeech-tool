@@ -1,4 +1,4 @@
-import { ArticleDto } from "../models/article.model";
+import { ArticleDto } from "../../models/article.model";
 import fs from 'fs';
 import path from 'path';
 

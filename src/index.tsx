@@ -1,11 +1,9 @@
 import React, { Component, useState } from 'react';
 import { Box, Text, render } from 'ink';
 import { setup } from './modules/setup';
-import { FileAccess } from './modules/file-access';
+import { FileAccess } from './modules/git/file-access';
 import { NewArticleInput } from './components/NewArticleInput';
 import { ArticleDto } from './models/article.model';
-import { createArticle } from './modules/article-creation';
-import path from 'path';
 
 const main = async () => {
   try {
@@ -13,13 +11,13 @@ const main = async () => {
     const manager = await setup();
     const fileAccess = new FileAccess();
 
-    await createArticle(fileAccess, {
-      title: 'Test article 2',
-      oneliner: 'Integration tool testing article',
-      url: 'article-2',
-      tags: ['test', 'integration'],
-      filePath: path.join(__dirname, '..', 'mock', 'article.md')
-    });
+    // await createArticle(fileAccess, {
+    //   title: 'Test article 2',
+    //   oneliner: 'Integration tool testing article',
+    //   url: 'article-2',
+    //   tags: ['test', 'integration'],
+    //   filePath: path.join(__dirname, '..', 'mock', 'article.md')
+    // });
   } catch (error) {
     console.error(error);
   }

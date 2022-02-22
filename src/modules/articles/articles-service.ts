@@ -1,6 +1,6 @@
-import { Article, ArticleDto } from "../models/article.model";
+import { Article, ArticleDto } from "../../models/article.model";
 import { ArticleValidator } from "./article-validator";
-import { FileAccess } from "./file-access";
+import { FileAccess } from "../git/file-access";
 import fs from 'fs';
 
 type RawArticle = Omit<Article, 'date'> & { date: string };

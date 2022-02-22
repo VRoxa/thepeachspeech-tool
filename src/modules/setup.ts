@@ -1,6 +1,6 @@
 import rimraf from 'rimraf';
 import env from '../environment/environment';
-import { RepositoryManager } from './repository-manager';
+import { RepositoryManager } from './git/repository-manager';
 
 
 // TODO - Display console log events with styles (using chalk.js)
