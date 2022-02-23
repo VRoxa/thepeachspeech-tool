@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { Box, Text } from 'ink';
-import { Select } from "./common/Select";
+import { SelectText } from "./common/SelectText";
 import { useBack } from "../hooks/use-back";
 import { CreateArticle } from "./CreateArticle";
 import { SaveChanges } from "./SaveChanges";
+import { ViewArticles } from "./ViewArticles";
 
 const options: [string, () => JSX.Element][] = [
+  ['View articles', () => <ViewArticles />],
   ['Add new article', () => <CreateArticle />],
-  ['Save changes', () => <SaveChanges />]
+  ['Save changes', () => <SaveChanges />],
 ]
 
 export const MainMenu = () => {
 
   const main = (
-    <Select options={options.map(([label]) => label)} onSelect={label => {
+    <SelectText elements={options.map(([label]) => label)} onSelect={label => {
       const [_, componentFactory] = options[label];
       return setMenu(componentFactory());
     }} />
