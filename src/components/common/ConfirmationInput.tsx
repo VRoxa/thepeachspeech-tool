@@ -18,7 +18,7 @@ export const ConfirmationInput = ({ defaultValue = true, promptMessage, onSubmit
   }
 
   const y = defaultValue ? 'Y' : 'y';
-  const n = defaultValue ? 'N' : 'n';
+  const n = defaultValue ? 'n' : 'N';
   const message = `${promptMessage} (${y}/${n})`;
   
   return (
@@ -31,7 +31,7 @@ export const ConfirmationInput = ({ defaultValue = true, promptMessage, onSubmit
 }
 
 export interface ConfirmationInputProps {
-  defaultValue: boolean;
+  defaultValue?: boolean;
   promptMessage: string;
   onSubmit: (confirm: boolean) => void;
 }

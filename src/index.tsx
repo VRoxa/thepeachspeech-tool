@@ -8,6 +8,7 @@ import { ArticlesService } from './modules/articles/articles-service';
 import path from 'path';
 import { createCommit } from './modules/git/create-commit';
 import { MainMenu } from './components/MainMenu';
+import { Exit } from './components/common/Exit';
 
 const main = async () => {
   try {
@@ -63,13 +64,10 @@ const main = async () => {
     // }
   
     return (
-      // <Box flexDirection="column">
-      //   <NewArticleInput onComplete={onArticleCreated}></NewArticleInput>
-      //   {articleCreated &&
-      //     <Text color="green">Article created.</Text>
-      //   }
-      // </Box>
-      <MainMenu />
+      <>
+        <MainMenu />
+        <Exit />
+      </>
     );
   }
 

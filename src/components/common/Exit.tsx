@@ -8,5 +8,5 @@ export const Exit = () => {
     key.escape && exit();
   });
   
-  return <Text>Press escape to exit.</Text>;
+  return <Text color="gray">Press escape to exit.</Text>;
 }

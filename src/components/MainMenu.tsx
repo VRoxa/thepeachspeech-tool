@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Box, Text } from 'ink';
 import { Select } from "./common/Select";
 import { useBack } from "../hooks/use-back";
-import { Exit } from "./common/Exit";
+import { CreateArticle } from "./CreateArticle";
 
 const options: [string, () => JSX.Element][] = [
-  ['Option 1', () => (<Text>Optiondsdkjs</Text>)],
+  ['Add new article', () => (<CreateArticle />)],
   ['Option 2', () => (<Text>Optiondsdkjs</Text>)],
   ['Option 3', () => (<Text>Optiondsdkjs</Text>)],
   ['Option 4', () => (<Text>Optiondsdkjs</Text>)],
@@ -26,7 +26,7 @@ export const MainMenu = () => {
   return (
     <Box flexDirection="column">
       {menu}
-      <Exit />
+      <Box marginTop={1}><Text color="gray">Press back to return to the main menu.</Text></Box>
     </Box>
   );
 }

@@ -35,20 +35,18 @@ export class ArticlesService {
     }));
   }
 
-  addArticle = async (articleDto: ArticleDto): Promise<boolean> => {
+  addArticle = async (articleDto: ArticleDto): Promise<[boolean, string]> => {
     // Validate article DTO
     const [valid, error] = this.validator.validate(articleDto);
     if (!valid) {
-      console.error(error);
-      return false;
+      return [false, error];
     }
 
     // Check if article markdown file exists.
     let articles = await this.getArticles();
     const isDuplicated = articles.some(({ url }) => url === articleDto.url);
     if (isDuplicated) {
-      console.error(`Article '${articleDto.url}' already exists`);
-      return false;
+      return [false, `Article '${articleDto.url}' already exists`];
     }
 
     // Extract article from ArticleDto
@@ -64,7 +62,7 @@ export class ArticlesService {
     const articleContent = await readContent(filePath);
     await this.fileAccess.addOrUpdateFile(articleFilePath, articleContent);
   
-    return true;
+    return [true, null];
   }
 
   updateArticle = async (article: ArticleDto): Promise<boolean> => {
