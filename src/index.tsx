@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, render } from 'ink';
+import { Text, render, Box } from 'ink';
 import { setup } from './modules/setup';
 import { MainMenu } from './components/MainMenu';
 import { Exit } from './components/common/Exit';
@@ -32,7 +32,11 @@ const main = async () => {
     return (
       <>
         <Header />
-        {state === AppState.SettingUp && <Text color='gray'>🕗 Setting the repository up...</Text>}
+        {state === AppState.SettingUp && 
+          <Box marginBottom={1}>
+            <Text color='gray'>🕗 Setting the repository up...</Text>
+          </Box>
+        }
         {state === AppState.Setup && <MainMenu />}
         {state === AppState.Failed && <Text color='red'>❌ {error.message}</Text>}
         <Exit />

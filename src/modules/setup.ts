@@ -9,9 +9,7 @@ import { RepositoryManager } from './git/repository-manager';
 
 const cleanUpEnvironment = (): Promise<void> => {
   return new Promise(resolve => {
-    console.log('Cleaning up the environment repository at', env.repositoryPath);
     rimraf(env.repositoryPath, () => {
-      console.log('Bare repository cleaned up');
       resolve();
     });
   });

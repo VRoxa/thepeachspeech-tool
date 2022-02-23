@@ -3,12 +3,11 @@ import { Box, Text } from 'ink';
 import { Select } from "./common/Select";
 import { useBack } from "../hooks/use-back";
 import { CreateArticle } from "./CreateArticle";
+import { SaveChanges } from "./SaveChanges";
 
 const options: [string, () => JSX.Element][] = [
-  ['Add new article', () => (<CreateArticle />)],
-  ['Option 2', () => (<Text>Optiondsdkjs</Text>)],
-  ['Option 3', () => (<Text>Optiondsdkjs</Text>)],
-  ['Option 4', () => (<Text>Optiondsdkjs</Text>)],
+  ['Add new article', () => <CreateArticle />],
+  ['Save changes', () => <SaveChanges />]
 ]
 
 export const MainMenu = () => {
