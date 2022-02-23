@@ -1,4 +1,10 @@
+import { RepositoryManager } from "../modules/git/repository-manager";
 
-export const global = {
-  backEnabled: true
+export interface Global {
+  backEnabled: boolean;
+  manager?: RepositoryManager;
+}
+
+export const global: Global = {
+  backEnabled: true,
 }
