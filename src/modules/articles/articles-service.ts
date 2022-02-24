@@ -71,7 +71,19 @@ export class ArticlesService {
   }
 
   deleteArticle = async (article: ArticleDto): Promise<boolean> => {
-    // TODO - check if exists, delete markdown file and update articles.json
-    return false;
+    const articles = await this.getArticles();
+    const filteredArticles = articles.filter(({ url }) => url !== article.url);
+    if (filteredArticles.length === articles.length) return false;
+
+    try {
+      await this.fileAccess.addOrUpdateFile(articlesJsonFilePath, JSON.stringify(filteredArticles, null, 2));
+
+      const articleFilePath = `${articlesFolderPath}/${article.url}.md`;
+      await this.fileAccess.deleteFile(articleFilePath);
+    } catch (err) {
+      return false;
+    }
+
+    return true;
   }
 }

@@ -6,39 +6,63 @@ import { ArticlesService } from "../modules/articles/articles-service"
 import { FileAccess } from "../modules/git/file-access"
 import { primary } from "../styles/colors";
 import { Select } from "./common/Select";
+import { DeleteArticle } from "./DeleteArticle";
+
+enum ViewArticlesState {
+  Idle,
+  Delete,
+  View,
+}
 
 export const ViewArticles = () => {
   const service = new ArticlesService(new FileAccess());
   const [articles, setArticles] = useState<ArticleDto[]>([]);
+  const [state, setState] = useState(ViewArticlesState.Idle);
+  const [selected, setSelected] = useState<ArticleDto | null>(null);
 
   const onViewArticle = (article: ArticleDto) => {
     console.log('On view article', article.title);
   }
   
   const onDeleteArticle = (article: ArticleDto) => {
-    console.log('On delete article', article.title);
+    setSelected(article);
+    setState(ViewArticlesState.Delete);
   }
 
   useEffect(() => {
     service
       .getArticles()
       .then(setArticles);
-  }, []);
+  }, [state]);
 
   return (
-    <Select elements={articles} onSelect={title => {
-      console.log('Selected', title);
-    }} render={(article, selected, index) => 
-      <SelectArticleContent
-        article={article}
-        selected={selected}
-        index={index}
-        handler={{
-          onView: () => onViewArticle(article),
-          onDelete: () => onDeleteArticle(article)
-        }}
-      />
-    }/>
+    <>
+      {state === ViewArticlesState.Idle &&
+        <Select
+          elements={articles}
+          onSelect={(article) => setSelected(article)}
+          render={(article, selected, index) => 
+            <SelectArticleContent
+              article={article}
+              selected={selected}
+              index={index}
+              handler={{
+                onView: () => onViewArticle(article),
+                onDelete: () => onDeleteArticle(article)
+              }}
+            />
+          }
+        />
+      }
+
+      {state === ViewArticlesState.Delete &&
+        <DeleteArticle 
+          article={selected!}
+          onDelete={() => setState(ViewArticlesState.Idle)}
+          service={service}
+        />
+      }
+    </>
   )
 }
 
@@ -80,8 +104,8 @@ const SelectArticleContent = ({article, selected, handler}: SelectArticleContent
             justifyContent='space-around'
             width='100%'
           >
-            <Text color={primary[800]}>(V) View</Text>
-            <Text color={primary[800]}>(D) Delete</Text>
+            <Text color={primary[800]}>(V) View 🔎</Text>
+            <Text color={primary[800]}>(D) Delete 💀</Text>
           </Box>
         </Box>
       }

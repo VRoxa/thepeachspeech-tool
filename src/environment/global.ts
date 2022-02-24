@@ -8,3 +8,9 @@ export interface Global {
 export const global: Global = {
   backEnabled: true,
 }
+
+export const delay = (millis: number) => {
+  return new Promise<void>(resolve => {
+    setTimeout(resolve, millis);
+  });
+}

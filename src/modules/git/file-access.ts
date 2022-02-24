@@ -15,9 +15,12 @@ export class FileAccess {
     await fs.promises.writeFile(fullPath, content, { encoding: 'utf8' });
   }
 
+  deleteFile = async (path: string): Promise<void> => {
+    const fullPath = this.getPath(path);
+    await fs.promises.unlink(fullPath);
+  }
+
   private getPath = (fullPath: string): string => {
     return join(environment.repositoryPath, fullPath);
   }
 }
-
-

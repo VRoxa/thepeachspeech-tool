@@ -24,4 +24,3 @@ export const setup = async (): Promise<RepositoryManager> => {
 
   return manager;
 }
-
