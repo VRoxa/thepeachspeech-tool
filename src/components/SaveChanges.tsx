@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'ink';
 import { Input } from './common/Input';
 import { ConfirmationInput } from './common/ConfirmationInput';
 import { createCommit } from '../modules/git/create-commit';
-import { global } from '../environment/global';
+import { global, Operation } from '../environment/global';
+import { accent } from '../styles/colors';
 
 enum SaveChangesState {
   PromptCommitMessage,
@@ -13,9 +14,23 @@ enum SaveChangesState {
   Saved
 }
 
+const renderOperation = ({ operation, article: {url} }: Operation) => {
+  if (operation === 'create') {
+    return <Text color='green'>Article {url} created ✔.</Text>
+  }
+
+  if (operation === 'delete') {
+    return <Text color='red'>Article {url} deleted 💀.</Text>
+  }
+
+  // update
+  return <Text color={accent[500]}>Article {url} updated 🔎.</Text>
+}
+
 export const SaveChanges = () => {
   const [error, setError] = useState<Error>(null);
   const [state, setState] = useState(SaveChangesState.PromptCommitMessage);
+  const [operations, setOperations] = useState<Operation[]>([]);
   const [commitMessage, setCommitMessage] = useState('');
 
   const onConfirmed = async () => {
@@ -30,6 +45,10 @@ export const SaveChanges = () => {
       setError(error);
     }
   }
+
+  useEffect(() => {
+    setOperations(global.operations);
+  }, []);
 
   const renderState = () => {
     switch (state) {
@@ -59,6 +78,8 @@ export const SaveChanges = () => {
 
   return (
     <>
+      {operations.map(renderOperation)}
+      {operations.length === 0 && <Text color='gray'>No changes to commit.</Text>}
       {renderState()}
     </>
   )

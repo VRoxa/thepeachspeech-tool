@@ -2,6 +2,7 @@ import { Article, ArticleDto } from "../../models/article.model";
 import { ArticleValidator } from "./article-validator";
 import { FileAccess } from "../git/file-access";
 import fs from 'fs';
+import { global } from "../../environment/global";
 
 type RawArticle = Omit<Article, 'date'> & { date: string };
 
@@ -53,20 +54,36 @@ export class ArticlesService {
     let { filePath, ...article } = articleDto;
     article = {...article, date: new Date() } as Required<Article>;
 
-    // Update articles.json file
-    articles = [...articles, articleDto as Required<Article>];
-    await this.fileAccess.addOrUpdateFile(articlesJsonFilePath, JSON.stringify(articles, null, 2));
-    
-    // Upload article markdown file
-    const articleFilePath = `${articlesFolderPath}/${articleDto.url}.md`;
-    const articleContent = await readContent(filePath);
-    await this.fileAccess.addOrUpdateFile(articleFilePath, articleContent);
-  
+    try {
+
+      // Update articles.json file
+      articles = [...articles, articleDto as Required<Article>];
+      await this.fileAccess.addOrUpdateFile(articlesJsonFilePath, JSON.stringify(articles, null, 2));
+      
+      // Upload article markdown file
+      const articleFilePath = `${articlesFolderPath}/${articleDto.url}.md`;
+      const articleContent = await readContent(filePath);
+      await this.fileAccess.addOrUpdateFile(articleFilePath, articleContent);
+    } catch (err) {
+      return [false, err.message];
+    }
+
+    global.operations = [...global.operations, {
+      operation: 'create',
+      article: articleDto
+    }];
+
     return [true, null];
   }
 
   updateArticle = async (article: ArticleDto): Promise<boolean> => {
     // TODO - Validate article, update markdown file and update articles.json
+
+    // global.operations = [...global.operations, {
+    //   operation: 'update',
+    //   article: article
+    // }];
+
     return false;
   }
 
@@ -83,6 +100,11 @@ export class ArticlesService {
     } catch (err) {
       return false;
     }
+
+    global.operations = [...global.operations, {
+      operation: 'delete',
+      article: article
+    }];
 
     return true;
   }
