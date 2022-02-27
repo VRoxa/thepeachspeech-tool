@@ -1,7 +1,6 @@
-import { Box, Text, useInput } from "ink"
+import { Box, useInput } from "ink"
 import React, { useState } from "react"
 import { useArrows } from "../../hooks/use-arrows";
-import { primary } from "../../styles/colors";
 
 export const Select = <T extends {}>({ elements, render, onSelect }: SelectProps<T>) => {
   const [selected, setSelected] = useState(0);
@@ -35,22 +34,4 @@ export interface SelectProps<T extends {}> {
   elements: T[];
   render: (element: T, selected: boolean, index: number) => JSX.Element;
   onSelect?: (element: T, index: number) => void;
-}
-
-const Option = ({ value, selected }: OptionProps) => {
-  const before = selected ? '◽' : '  ';
-  const color = selected ? primary[500] : primary[200];
-
-  return (
-    <Text>
-      <Text>{before}</Text>
-      <Text color={color}>{value}</Text>
-    </Text>
-  );
-}
-
-interface OptionProps {
-  value: string;
-  index: number;
-  selected: boolean;
 }

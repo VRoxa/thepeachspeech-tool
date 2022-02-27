@@ -27,7 +27,7 @@ export const DeleteArticle = ({ article, onDelete, service }: DeleteArticleProps
     }
 
     setState(DeleteArticleState.Confirmed);
-    const deleted = await service.deleteArticle(article);
+    const deleted = await service.delete(article);
 
     setCountdown(3);
     setState(deleted 

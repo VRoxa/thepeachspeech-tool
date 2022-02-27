@@ -14,17 +14,17 @@ enum SaveChangesState {
   Saved
 }
 
-const renderOperation = ({ operation, article: {url} }: Operation) => {
+const renderOperation = ({ operation, article: {url} }: Operation, index: number) => {
   if (operation === 'create') {
-    return <Text color='green'>Article {url} created ✔.</Text>
+    return <Text key={index} color='green'>Article {url} created ✔.</Text>
   }
 
   if (operation === 'delete') {
-    return <Text color='red'>Article {url} deleted 💀.</Text>
+    return <Text key={index} color='red'>Article {url} deleted 💀.</Text>
   }
 
   // update
-  return <Text color={accent[500]}>Article {url} updated 🔎.</Text>
+  return <Text key={index} color={accent[500]}>Article {url} updated 🔎.</Text>
 }
 
 export const SaveChanges = () => {

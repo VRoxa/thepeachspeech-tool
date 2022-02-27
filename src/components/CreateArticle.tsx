@@ -22,7 +22,7 @@ export const CreateArticle = () => {
     setArticle(article);
     setState(ComponentState.Adding);
 
-    const [valid, error] = await articlesService.addArticle(article);
+    const [valid, error] = await articlesService.add(article);
     
     if (valid) {
       setState(ComponentState.Added);

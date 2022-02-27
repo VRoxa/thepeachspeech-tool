@@ -7,11 +7,7 @@ import { global } from "../../environment/global";
 type RawArticle = Omit<Article, 'date'> & { date: string };
 
 const readContent = (filePath: string): Promise<string> => {
-  return new Promise<string>((resolve, reject) => {
-    fs.readFile(filePath, { encoding: 'utf8' }, (err, content) => {
-      !!err ? reject(err) : resolve(content);
-    });
-  });
+  return fs.promises.readFile(filePath, { encoding: 'utf8' });
 }
 
 const articlesJsonFilePath = 'src/assets/articles.json';
@@ -27,7 +23,7 @@ export class ArticlesService {
     this.validator = new ArticleValidator();
   }
 
-  getArticles = async (): Promise<Article[]> => {
+  getAll = async (): Promise<Article[]> => {
     const articlesJson = await this.fileAccess.getContent(articlesJsonFilePath);
     const articles: RawArticle[] = JSON.parse(articlesJson);
     return articles.map(article => ({
@@ -36,7 +32,7 @@ export class ArticlesService {
     }));
   }
 
-  addArticle = async (articleDto: ArticleDto): Promise<[boolean, string]> => {
+  add = async (articleDto: ArticleDto): Promise<[boolean, string]> => {
     // Validate article DTO
     const [valid, error] = this.validator.validate(articleDto);
     if (!valid) {
@@ -44,7 +40,7 @@ export class ArticlesService {
     }
 
     // Check if article markdown file exists.
-    let articles = await this.getArticles();
+    let articles = await this.getAll();
     const isDuplicated = articles.some(({ url }) => url === articleDto.url);
     if (isDuplicated) {
       return [false, `Article '${articleDto.url}' already exists`];
@@ -76,7 +72,7 @@ export class ArticlesService {
     return [true, null];
   }
 
-  updateArticle = async (article: ArticleDto): Promise<boolean> => {
+  update = async (article: ArticleDto): Promise<boolean> => {
     // TODO - Validate article, update markdown file and update articles.json
 
     // global.operations = [...global.operations, {
@@ -87,8 +83,8 @@ export class ArticlesService {
     return false;
   }
 
-  deleteArticle = async (article: ArticleDto): Promise<boolean> => {
-    const articles = await this.getArticles();
+  delete = async (article: ArticleDto): Promise<boolean> => {
+    const articles = await this.getAll();
     const filteredArticles = articles.filter(({ url }) => url !== article.url);
     if (filteredArticles.length === articles.length) return false;
 

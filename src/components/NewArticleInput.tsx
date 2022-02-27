@@ -47,6 +47,7 @@ export const NewArticleInput = ({ onComplete }: NewArticleInputProps) => {
 
     // All steps were completed
     if (step === steps.length - 1) {
+      article.date = new Date();
       setState(NewArticleInputState.AwaitConfirmation);
       return;
     }

@@ -31,7 +31,7 @@ export const ViewArticles = () => {
 
   useEffect(() => {
     service
-      .getArticles()
+      .getAll()
       .then(setArticles);
   }, [state]);
 
