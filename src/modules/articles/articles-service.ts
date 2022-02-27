@@ -48,13 +48,16 @@ export class ArticlesService {
 
     // Extract article from ArticleDto
     let { filePath, ...article } = articleDto;
-    article = {...article, date: new Date() } as Required<Article>;
+    article = article as Required<Article>;
 
     try {
 
       // Update articles.json file
       articles = [...articles, articleDto as Required<Article>];
-      await this.fileAccess.addOrUpdateFile(articlesJsonFilePath, JSON.stringify(articles, null, 2));
+      await this.fileAccess.addOrUpdateFile(
+        articlesJsonFilePath,
+        JSON.stringify(articles, null, 2)
+      );
       
       // Upload article markdown file
       const articleFilePath = `${articlesFolderPath}/${articleDto.url}.md`;
@@ -72,15 +75,44 @@ export class ArticlesService {
     return [true, null];
   }
 
-  update = async (article: ArticleDto): Promise<boolean> => {
-    // TODO - Validate article, update markdown file and update articles.json
+  update = async (articleDto: ArticleDto): Promise<[boolean, string]> => {
+    const [valid, error] = this.validator.validate(articleDto);
+    if (!valid) {
+      return [false, error];
+    }
 
-    // global.operations = [...global.operations, {
-    //   operation: 'update',
-    //   article: article
-    // }];
+    let articles = await this.getAll();
+    const original = articles.find(({ url }) => url === articleDto.url);
+    if (!original) {
+      return [false, `No article found by url '${articleDto.url}'`];
+    }
 
-    return false;
+    try {
+      // Update articles.json file
+      articles = articles.map(article => {
+        return article.url === original.url 
+          ? articleDto as Required<Article>
+          : article;
+      });
+      await this.fileAccess.addOrUpdateFile(
+        articlesJsonFilePath, 
+        JSON.stringify(articles, null, 2)
+      );
+
+      // Update article markdown file
+      const articleFilePath = `${articlesFolderPath}/${articleDto.url}.md`;
+      const articleContent = await readContent(articleDto.filePath);
+      await this.fileAccess.addOrUpdateFile(articleFilePath, articleContent);
+    } catch (err) {
+      return [false, err.message];
+    }
+    
+    global.operations = [...global.operations, {
+      operation: 'update',
+      article: articleDto
+    }];
+
+    return [true, ''];
   }
 
   delete = async (article: ArticleDto): Promise<boolean> => {
