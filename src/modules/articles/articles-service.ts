@@ -48,12 +48,11 @@ export class ArticlesService {
 
     // Extract article from ArticleDto
     let { filePath, ...article } = articleDto;
-    article = article as Required<Article>;
 
     try {
 
       // Update articles.json file
-      articles = [...articles, articleDto as Required<Article>];
+      articles = [...articles, article as Required<Article>];
       await this.fileAccess.addOrUpdateFile(
         articlesJsonFilePath,
         JSON.stringify(articles, null, 2)
@@ -76,7 +75,10 @@ export class ArticlesService {
   }
 
   update = async (articleDto: ArticleDto): Promise<[boolean, string]> => {
-    const [valid, error] = this.validator.validate(articleDto);
+    // Check if the file was updated
+    const fileIsUpdated = !!articleDto.filePath;
+
+    const [valid, error] = this.validator.validate(articleDto, fileIsUpdated);
     if (!valid) {
       return [false, error];
     }
@@ -87,22 +89,27 @@ export class ArticlesService {
       return [false, `No article found by url '${articleDto.url}'`];
     }
 
+    // Extract article from ArticleDto
+    let { filePath, ...article } = articleDto;
+
     try {
       // Update articles.json file
-      articles = articles.map(article => {
-        return article.url === original.url 
-          ? articleDto as Required<Article>
-          : article;
+      articles = articles.map(originalArticle => {
+        return originalArticle.url === original.url 
+          ? article as Required<Article>
+          : originalArticle;
       });
       await this.fileAccess.addOrUpdateFile(
         articlesJsonFilePath, 
         JSON.stringify(articles, null, 2)
       );
 
-      // Update article markdown file
-      const articleFilePath = `${articlesFolderPath}/${articleDto.url}.md`;
-      const articleContent = await readContent(articleDto.filePath);
-      await this.fileAccess.addOrUpdateFile(articleFilePath, articleContent);
+      if (fileIsUpdated) {
+        // Update article markdown file
+        const articleFilePath = `${articlesFolderPath}/${articleDto.url}.md`;
+        const articleContent = await readContent(articleDto.filePath);
+        await this.fileAccess.addOrUpdateFile(articleFilePath, articleContent);
+      }
     } catch (err) {
       return [false, err.message];
     }

@@ -46,6 +46,7 @@ export const UpdateArticle = ({article, service, onUpdate}: UpdateArticleProps) 
       setError(error);
     }
 
+    setCountdown(3);
     await delay(1000);
     setCountdown(2);
     await delay(1000);
