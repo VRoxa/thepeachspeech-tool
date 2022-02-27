@@ -14,7 +14,6 @@ enum DeleteArticleState {
   Error
 }
 
-
 export const DeleteArticle = ({ article, onDelete, service }: DeleteArticleProps) => {
   const [state, setState] = useState(DeleteArticleState.PromptConfirmation);
   const [countdown, setCountdown] = useState(0);

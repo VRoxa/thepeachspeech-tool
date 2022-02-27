@@ -7,11 +7,13 @@ import { FileAccess } from "../modules/git/file-access"
 import { primary } from "../styles/colors";
 import { Select } from "./common/Select";
 import { DeleteArticle } from "./DeleteArticle";
+import { UpdateArticle } from "./UpdateArticle";
 
 enum ViewArticlesState {
   Idle,
   Delete,
   View,
+  Update
 }
 
 export const ViewArticles = () => {
@@ -27,6 +29,11 @@ export const ViewArticles = () => {
   const onDeleteArticle = (article: ArticleDto) => {
     setSelected(article);
     setState(ViewArticlesState.Delete);
+  }
+
+  const onUpdateArticle = (article: ArticleDto) => {
+    setSelected(article);
+    setState(ViewArticlesState.Update);
   }
 
   useEffect(() => {
@@ -48,7 +55,8 @@ export const ViewArticles = () => {
               index={index}
               handler={{
                 onView: () => onViewArticle(article),
-                onDelete: () => onDeleteArticle(article)
+                onDelete: () => onDeleteArticle(article),
+                onUpdate: () => onUpdateArticle(article)
               }}
             />
           }
@@ -58,8 +66,16 @@ export const ViewArticles = () => {
       {state === ViewArticlesState.Delete &&
         <DeleteArticle 
           article={selected!}
-          onDelete={() => setState(ViewArticlesState.Idle)}
           service={service}
+          onDelete={() => setState(ViewArticlesState.Idle)}
+        />
+      }
+
+      {state === ViewArticlesState.Update &&
+        <UpdateArticle 
+          article={selected!}
+          service={service}
+          onUpdate={() => setState(ViewArticlesState.Idle)}
         />
       }
     </>
@@ -82,6 +98,11 @@ const SelectArticleContent = ({article, selected, handler}: SelectArticleContent
       handler.onDelete();
       return;
     }
+
+    if (input === 'U' || input === 'u') {
+      handler.onUpdate();
+      return;
+    }
   });
 
   return (
@@ -96,7 +117,7 @@ const SelectArticleContent = ({article, selected, handler}: SelectArticleContent
           alignItems='center'
           justifyContent='center'
           width='10%'
-          minWidth={30}
+          minWidth={40}
         >
           <Text bold color={primary[500]}>{article.title}</Text>
           <Box
@@ -106,6 +127,7 @@ const SelectArticleContent = ({article, selected, handler}: SelectArticleContent
           >
             <Text color={primary[800]}>(V) View 🔎</Text>
             <Text color={primary[800]}>(D) Delete 💀</Text>
+            <Text color={primary[800]}>(U) Update 🔃</Text>
           </Box>
         </Box>
       }
@@ -120,5 +142,6 @@ interface SelectArticleContentProps {
   handler: {
     onView: () => void;
     onDelete: () => void;
+    onUpdate: () => void;
   }
 }
